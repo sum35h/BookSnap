@@ -6,7 +6,7 @@ db = SQLAlchemy()
 class User(db.Model):
   __tablename__='users'
   
-  email = db.Column(db.String(120),nullable=False,primary_key=True)
+  id = db.Column(db.String(),nullable=False,primary_key=True)
   username = db.Column(db.String(120),nullable=True)
   reviews = db.relationship('Review',backref='user')
 
@@ -40,9 +40,12 @@ class Review(db.Model):
     __tablename__ = 'reviews'
 
     id = db.Column(db.Integer, primary_key=True)
+    created = db.Column(db.DateTime)
+    edited = db.Column(db.DateTime)
+    title = db.Column(db.String(120))
     comment = db.Column(db.Text)
     rating = db.Column(db.Integer)
-    user_email= db.Column(db.String(120),db.ForeignKey('users.email'))
+    user_id = db.Column(db.String,db.ForeignKey('users.id'))
     book_id= db.Column(db.String,db.ForeignKey('books.id'))
     
   
