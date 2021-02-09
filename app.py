@@ -14,7 +14,7 @@ from helper_methods import *
 from forms import ReviewForm
 from auth import *
 
-AUTH0_URL ='https://sumesh-fsnd.jp.auth0.com/authorize?audience=http://localhost:5000&response_type=token&client_id=5PrFVO8YBGSHJbF6XdvYjFyJ2N0VVj3z&redirect_uri=http://localhost:5000/home'
+AUTH0_URL ='https://sumesh-fsnd.jp.auth0.com/authorize?audience=http://localhost:5000&response_type=token&client_id=5PrFVO8YBGSHJbF6XdvYjFyJ2N0VVj3z&redirect_uri=http://https://booksnap.herokuapp.com/home'
 
 
 app = Flask(__name__)
@@ -191,7 +191,7 @@ def callback_handling():
 
 @app.route('/login')
 def login():
-    return auth0.authorize_redirect(redirect_uri='http://localhost:5000/callback')
+    return auth0.authorize_redirect(redirect_uri='https://booksnap.herokuapp.com/callback')
 
 @app.route('/logout')
 @requires_auth()
