@@ -1,0 +1,219 @@
+{% extends 'layouts/main.html' %}
+{% block content %}
+
+
+<div class="container">
+
+<!-- Modal -->
+<div class="modal fade" id="DeleteConfirmModalCenter" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="exampleModalLongTitle">Warning</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        Are you sure you want to delete your review?
+      </div>
+      {% if posted%}
+      <div class="modal-footer">
+        
+
+        <button type="button" class="btn btn-secondary" data-dismiss="modal">No</button>
+        <button type="button" id='rev_del_btn' class="btn btn-primary">Yes</button>
+        <script>
+			
+          const rev_del_btn=document.getElementById('rev_del_btn');
+          rev_del_btn.onclick=function(){
+            console.log('click');
+            
+            fetch("{{url_for('delete_review',book_id=book_id,review_id=my_review.id)}}",
+            {
+            method:'DELETE'
+            }
+            ).then(function(response){
+                                return response.json();
+                            }).then(function(jsonResponse){
+                                if (jsonResponse['success']){
+                                 
+                                    window.location.href = "{{url_for('book_details',id=book_id)}}";
+                            }}).catch(function(){
+                  console.log('error');
+                            });
+          }
+                    
+        </script>
+      </div>
+      {% endif %}
+    </div>
+  </div>
+</div>
+
+            <div class="card">
+                <div class="card-header">
+                    <h5 class="card-title">{{title}}</h5>
+                </div>
+                <div class="card-body row">
+                    <div class="col-md-2 col-4"> <img class="card-img-top" src="{{image_link}}" height="200" width="60"></div>
+                    <div class="col-md-8 col-8">
+                        <p class="card-text">Author: {{author}} </p>
+                        <p class="card-text">Category: {{category}} </p>
+                        <p class="card-text">Summary: {{summary|safe}} </p>
+                    </div>
+                </div>
+            </div>
+    
+    <br>
+
+
+
+{% if name!='Login' %}
+
+  {% if not posted %}
+   
+      <button id='post_review_btn' class='bth btn-primary btn-lg btn-block'>Write a Review</button>
+    <div class="form-wrapper" id='post_review_form' style='display:none'>
+      <form method="post" class="form" action="{{'reviews/'+id}}">
+        <h3 class="form-heading">Your Review</h3>
+        <div class="form-group">
+      
+          <label for="title">Title</label>
+          {{ form.title(class_ = 'form-control', autofocus = true, placeholder='Review title',) }}
+        </div>
+        
+        <div class="form-group">
+            <label for="review">Review</label>
+            {{ form.review(class_ = 'form-control', placeholder='Write a review here....', autofocus = true,rows=5) }}
+          </div>
+        <div class="form-group">
+          <label for="rating">Rating</label>
+
+          {{ form.rating(class_ = 'form-control', placeholder='Ratings, out of 5',  autofocus = true) }}
+
+        </div>
+        <input type="submit" value="Submit Review" class="btn btn-primary btn-lg btn-block">
+        
+        <button id='post_review_cancel_btn' class='bth btn-danger btn-lg btn-block'>Cancel</button>
+
+
+      </form>
+    </div>
+    <script>
+      const post_review_btn=document.getElementById('post_review_btn')
+      const post_review_cancel_btn=document.getElementById('post_review_cancel_btn')
+      const post_review_form=document.getElementById('post_review_form')
+      post_review_btn.onclick=function(){
+        post_review_btn.style.display='none';
+        post_review_form.style.display='block';
+      }
+      post_review_cancel_btn.onclick=function(e){
+        e.preventDefault()
+        post_review_btn.style.display='block';
+        post_review_form.style.display='none';
+      }
+    </script>
+    {% else %}
+    <h2> Your review :</h2>
+        <div class="form-wrapper" id='post_review_form' style='display:none'>
+          <form method="post" class="form" action="{{url_for('delete_review',book_id=book_id,review_id=my_review.id)}}">
+            
+            <div class="form-group">
+          
+              <label for="title">Title</label>
+              {{ form.title(class_ = 'form-control', autofocus = true, placeholder='Review title',) }}
+            </div>
+            
+            <div class="form-group">
+                <label for="review">Review</label>
+                {{ form.review(class_ = 'form-control', placeholder='Write a review here....', autofocus = true) }}
+              </div>
+            <div class="form-group">
+              <label for="rating">Rating</label>
+
+              {{ form.rating(class_ = 'form-control', placeholder='Ratings, out of 5',  autofocus = true) }}
+
+            </div>
+            <input type="submit" value="Submit Review" id='submit_btn' class="btn btn-primary btn-lg btn-block">
+            
+
+          </form>
+          <br>
+          <button id='post_review_cancel_btn' class='bth btn-danger btn-lg btn-block'>Cancel</button>
+
+        </div>
+
+    <div class="card" id="my_review">
+      <div class="card-header">
+      
+        {% for i in range(1,6) %}
+          {% if i<=my_review.rating %}
+            <span class="fa fa-star" style='color:orange'></span>
+          {% else %}
+        <span class="fa fa-star"></span>
+        {% endif %}
+       {% endfor %}
+   <h4 class='inline'>{{my_review.title}}   <button type="button" data-toggle="modal" data-target="#DeleteConfirmModalCenter" class='btn btn-danger pull-right' id='del_btn'>Delete</button> <button id='edit_btn' class='btn btn-primary pull-right'>Edit</button>
+    </h4> 
+
+      </div>
+      <div class="card-body">
+        <blockquote class="blockquote mb-0">
+          <p>{{my_review.comment}}</p>
+          <footer class="blockquote-footer">{{my_review.user.username}}      ({{my_review.edited}})</footer>
+        </blockquote>
+      </div>
+    </div>
+    <br>
+    <script>
+      const edit_btn = document.getElementById('edit_btn')
+      const my_review = document.getElementById('my_review')
+      const post_review_form = document.getElementById('post_review_form')
+      const post_review_cancel_btn = document.getElementById('post_review_cancel_btn')
+      const submit_btn = document.getElementById('submit_btn')
+      submit_btn.value='Save Changes'
+      edit_btn.onclick = function(){
+          my_review.style.display='none';
+          post_review_form.style.display='block';
+      }
+      post_review_cancel_btn.onclick=function(){
+        my_review.style.display='block';
+        post_review_form.style.display='none';
+      }
+     
+  
+      
+    </script>
+    {% endif %}
+{% else %}
+<h4> You have to Login to post a review</h4>
+{% endif %}
+
+<h2>Member Reviews</h2>
+  {% for review in reviews %}
+  <div class="card">
+    <div class="card-header">
+    
+      {% for i in range(1,6) %}
+        {% if i<=review.rating %}
+          <span class="fa fa-star" style='color:orange'></span>
+        {% else %}
+      <span class="fa fa-star"></span>
+      {% endif %}
+     {% endfor %}
+ <h4>{{review.title}}</h4>
+    </div>
+    <div class="card-body">
+      <blockquote class="blockquote mb-0">
+        <p>{{review.comment}}</p>
+        <footer class="blockquote-footer">{{review.user.username}}      ({{review.edited}})</footer>
+      </blockquote>
+    </div>
+  </div>
+  <br>
+  {% endfor %}
+    
+
+
+{% endblock %}

@@ -1,0 +1,30 @@
+{% extends 'layouts/main.html' %}
+{% block content %}
+      
+        <script>
+       
+            const fragment = window.location.hash.substr(1).split('&')[0].split('=');
+            // check if the fragment includes the access token
+            console.log(fragment)
+           
+            if ( fragment[0] === 'access_token' ) {
+            // add the access token to the jwt
+            document.cookie = "token="+fragment[1];
+            }
+           
+        </script>
+
+{% if name!='Login' %}
+<div class="container">
+    <h2> Home </h2>
+    <p> A community for readerssss</p>
+
+{% else %}
+ <h2>Home</h2>
+ <p> A community for readersss</p>
+
+ <p><a href="{{url_for('login')}}">Login/register to start posting reviews</a></p>
+{% endif %}
+</div>
+
+{% endblock %}

@@ -1,0 +1,39 @@
+{% extends 'layouts/main.html' %}
+{% block content %}
+      
+          
+ers</p>
+{% if name!='Login' %}
+<div class="container">
+   
+    <h3>My Reviews:</h3>
+    {% for review in reviews %}
+    <div class="card">
+      <div class="card-header">
+      
+        {% for i in range(1,6) %}
+          {% if i<=review.rating %}
+            <span class="fa fa-star" style='color:orange'></span>
+          {% else %}
+        <span class="fa fa-star"></span>
+        {% endif %}
+       {% endfor %}
+      
+      <a href="{{url_for('book_details',id=review.book.id)}}">
+        <h5>Book Title: {{review.book.title}} by {{review.book.author}}</h5>
+      </a> 
+   <h6>Review Title: {{review.title}} 
+      </div>
+      <div class="card-body">
+       
+          <p>{{review.comment}}</p>
+          <footer class="blockquote-footer">{{review.user.username}}      ({{review.edited}})</footer>
+      
+      </div>
+    </div>
+    <br>
+    {% endfor %}
+{% endif %}
+</div>
+
+{% endblock %}
