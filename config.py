@@ -4,5 +4,5 @@ basedir = os.path.abspath(os.path.dirname(__file__))
 
 DEBUG = True
 
-SQLALCHEMY_DATABASE_URI = r'postgresql://postgres:password@localhost:5432/booksnap_db'
+SQLALCHEMY_DATABASE_URI = os.environ.get('DATABASE_URL')
 SQLALCHEMY_TRACK_MODIFICATIONS = False
