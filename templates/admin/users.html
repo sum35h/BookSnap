@@ -1,0 +1,25 @@
+{% extends 'layouts/admin_main.html' %}
+{% block content %}
+
+
+<div class="container">
+
+    
+<h2>BookSnap Users</h2>
+  {% for user in users %}
+  <div class="card">
+    <div class="card-header">
+    
+     
+    
+     <h5>Username: {{user.username}}</h5>
+ <h6> Reviews: {{user.reviews|length }} </h6>
+    </div>
+
+  </div>
+  <br>
+  {% endfor %}
+    
+
+
+{% endblock %}

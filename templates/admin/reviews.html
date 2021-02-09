@@ -1,0 +1,55 @@
+{% extends 'layouts/admin_main.html' %}
+{% block content %}
+
+
+<div class="container">
+  <script>
+    function delete_func(id){
+     fetch("/admin/reviews/"+id,
+               {
+               method:'DELETE'
+               }
+               ).then(function(response){
+                                   return response.json();
+                               }).then(function(jsonResponse){
+                                   if (jsonResponse['success']){
+                                    
+                                       window.location.href = "{{url_for('admin_fetch_reviews')}}";
+                               }}).catch(function(){
+                     console.log('error');
+                               });
+             }
+      
+   
+  </script>
+
+    
+<h2>Member Reviews</h2>
+  {% for review in reviews %}
+  <div class="card">
+    <div class="card-header">
+    
+      {% for i in range(1,6) %}
+        {% if i<=review.rating %}
+          <span class="fa fa-star" style='color:orange'></span>
+        {% else %}
+      <span class="fa fa-star"></span>
+      {% endif %}
+     {% endfor %}
+    
+     <h5>Book Title: {{review.book.title}} by {{review.book.author}}</h5>
+ <h6>Review Title: {{review.title}} <button onclick=delete_func({{review.id}}) type="button" data-toggle="modal" data-target="#DeleteConfirmModalCenter" class='btn btn-danger pull-right' id='del_btn' >Delete</button></h6>
+    </div>
+    <div class="card-body">
+     
+        <p>{{review.comment}}</p>
+        <footer class="blockquote-footer">{{review.user.username}}      ({{review.edited}})</footer>
+    
+    </div>
+  </div>
+  <br>
+  {% endfor %}
+    
+
+
+{% endblock %}
