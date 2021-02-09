@@ -51,4 +51,4 @@ class Review(db.Model):
   
 
     def __repr__(self):
-      return f'<Review : id={self.id} comment:{self.comment}>'
+      return f'<Review : id={self.id} title:{self.title} comment:{self.comment}>'
