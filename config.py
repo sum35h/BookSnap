@@ -1,5 +1,5 @@
 import os
-SECRET_KEY = os.environ.get('SECRET_KEY')
+SECRET_KEY = 'booksnap'
 basedir = os.path.abspath(os.path.dirname(__file__))
 
 DEBUG = True
