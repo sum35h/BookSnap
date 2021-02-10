@@ -328,3 +328,8 @@ def resource_not_found(error):
 def not_authenticated(auth_error):
         return render_template('errors/401.html')
 
+
+@app.errorhandler(500)
+def not_authenticated(auth_error):
+        return render_template('errors/500.html')
+
