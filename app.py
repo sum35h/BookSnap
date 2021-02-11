@@ -13,8 +13,9 @@ from six.moves.urllib.parse import urlencode
 from helper_methods import *
 from forms import ReviewForm
 from auth import *
+import os
 
-AUTH0_URL ='https://sumesh-fsnd.jp.auth0.com/authorize?audience=http://localhost:5000&response_type=token&client_id=5PrFVO8YBGSHJbF6XdvYjFyJ2N0VVj3z&redirect_uri=https://booksnap.herokuapp.com/home'
+AUTH0_URL = os.environ.get('AUTH0_URL')
 
 
 app = Flask(__name__)
@@ -29,12 +30,12 @@ migrate = Migrate(app,db)
 oauth = OAuth(app)
 auth0 = oauth.register(
     'auth0',
-    client_id='5PrFVO8YBGSHJbF6XdvYjFyJ2N0VVj3z',
-    client_secret='A9SEQvAG_QdnVVnFal00FT7-5MSKZf4z4INPZn6TLeoTmvsL6rJLoVKXWvjer4bv',
-    api_base_url='https://sumesh-fsnd.jp.auth0.com',
-    access_token_url='https://sumesh-fsnd.jp.auth0.com/oauth/token',
-    authorize_url='https://sumesh-fsnd.jp.auth0.com/authorize',
-    audience='http://localhost:5000',
+    client_id = os.environ.get('CLIENT_ID'),
+    client_secret=os.environ.get('CLIENT_SHARED_SECRET'),
+    api_base_url= os.environ.get('AUTH0_DOMAIN'),
+    access_token_url=os.environ.get('ACCESS_TOKEN_URL'),
+    authorize_url=os.environ.get('AUTHORIZE_URL'),
+    audience=os.environ.get('API_AUDIENCE'),
     client_kwargs={
         'scope': 'openid profile email',
 
@@ -105,7 +106,6 @@ def search_books():
 @app.route('/book/<string:id>')
 def book_details(id):
     book = Book.query.get(id)
-    #print([b.id for b in book if id==b.id])
     
     if book is None :
         try:
@@ -116,7 +116,7 @@ def book_details(id):
             flash('Error fetching the book')
             
             db.session.rollback()
-            print('eception: ',e)
+            print('exception: ',e)
             abort(404)
         
     
@@ -183,15 +183,14 @@ def callback_handling():
     user_id=(session.get('profile')['user_id'][session.get('profile')['user_id'].index('|')+1:])
     if not User.query.filter(User.id==user_id ).first():
         user = User(id =  user_id ,username=session['profile']['name'])
-        db.session.add(user)
-        db.session.commit()
+        user.insert()
 
     return redirect(AUTH0_URL)
 
 
 @app.route('/login')
 def login():
-    return auth0.authorize_redirect(redirect_uri='https://booksnap.herokuapp.com/callback')
+    return auth0.authorize_redirect(redirect_uri=os.environ.get('CALLBACK'))
 
 @app.route('/logout')
 @requires_auth()
@@ -250,15 +249,12 @@ def post_review(payload,book_id):
 def delete_review(payload,book_id,review_id):
     try:
         review = Review.query.get(review_id)
-        
-        db.session.delete(review)
-        db.session.commit()
+        review.delete()
+
         flash('Delete successful')
     except Exception as e:
         flash('Delete was unsuccessful')
         db.session.rollback()
-        
-
     finally:
         db.session.close()
         
@@ -269,8 +265,7 @@ def delete_review(payload,book_id,review_id):
 def admin_delete_review(payload,review_id):
     try:
         review = Review.query.get(review_id)
-        db.session.delete(review)
-        db.session.commit()
+        review.delete()
         flash('Delete successful')
     except Exception as e:
         flash('Error: Delete failed')
@@ -291,9 +286,7 @@ def update_review(payload,book_id,review_id):
         review.comment = request.form['review']
         review.rating = request.form['rating']
         review.edited = datetime.today()
-
-        db.session.add(review)
-        db.session.commit()
+        review.insert()
         flash('Changes saved successful')
     except Exception as e:
         db.session.rollback()
@@ -330,6 +323,6 @@ def not_authenticated(auth_error):
 
 
 @app.errorhandler(500)
-def not_authenticated(auth_error):
+def not_authenticated(error):
         return render_template('errors/500.html')
 
