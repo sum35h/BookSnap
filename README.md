@@ -10,6 +10,8 @@ A user must be authorized as a User to be able to post/edit/delete reviews.
 
 A user must be authorized as an Admin to access the admin dash https://booksnap.herokuapp.com/admin.
 
+## Project Motivation
+I developed this project to test my skills and quickly get a small community of users actively using the app.
 
 ## Project dependencies
 The project depends on the latest version of Python 3.x which can be download and install from their official website.
