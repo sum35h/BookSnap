@@ -11,7 +11,7 @@ from unittest.mock import patch
 USER_PROFILE_DATA={   'user_id': 'auth0|601c1f4b35fbeb006b45a58a',
                         'name': "test123@gmail.com",   }
 USER_JWT_PAYLOAD={'sub': 'auth0|601c1f4b35fbeb006b45a58a', 'nickname': 'test123', 'name': 'test123@gmail.com', 'picture': 'https://s.gravatar.com/avatar/9a93efa79aa9f5d35e14bc55a3e16dc4?s=480&r=pg&d=https%3A%2F%2Fcdn.auth0.com%2Favatars%2Fte.png', 'updated_at': '2021-02-08T18:01:30.452Z', 'email': 'test123@gmail.com', 'email_verified': False}
-USER_ACCESS_TOKEN = 'eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCIsImtpZCI6IngzOThFR1RoWUQyUS1uYzRVRWxOcSJ9.eyJpc3MiOiJodHRwczovL3N1bWVzaC1mc25kLmpwLmF1dGgwLmNvbS8iLCJzdWIiOiJhdXRoMHw2MDFjMWY0YjM1ZmJlYjAwNmI0NWE1OGEiLCJhdWQiOiJodHRwOi8vbG9jYWxob3N0OjUwMDAiLCJpYXQiOjE2MTI4ODc1NTYsImV4cCI6MTYxMjg5NDc1NiwiYXpwIjoiNVByRlZPOFlCR1NISmJGNlhkdllqRnlKMk4wVlZqM3oiLCJzY29wZSI6IiIsInBlcm1pc3Npb25zIjpbImRlbGV0ZTp1c2VyX3Jldmlld3MiLCJnZXQ6dXNlcl9yZXZpZXdzIiwicGF0Y2g6dXNlcl9yZXZpZXdzIiwicG9zdDp1c2VyX3Jldmlld3MiXX0.WX-6_A69nL5zU4ryeJAR8Y7YA33eyGs3Fl95TrDl0ffU_1rrrJZwOIyk9Vo3iplQ_f00cImDlraZSfuNHrTBh392CREVMyeb8gc_4NsIkVXEwlZQu9sPdo6y9r4sknQO0Wqo6tqDWK-TkM5zxyvoSfLlYfKgddsE4OOcSQno8sHaTDb2-fUqs6e-8BQYzS58Xf_D4zcXUhlsFxzz5aeUqRFCDxeG0TzWB6l-hR8euu8MDaw_ryZIDfCB1qpYEDVCAElnnXhEK47US_lXry-JCXW_rkuFnbKN-ggCCCWJ5wShQJtLkFt7gTLmZ93NyBpv-hE3x2yTY8IruxYzRAVRUw'
+USER_ACCESS_TOKEN = os.environ.get('USER_ACCESS_TOKEN')
 
 ADMIN_PROFILE_DATA={   'user_id': 'auth0|6022bef23ae9d6006caf758b',
                         'name': "admin@booksnap.com",   }
@@ -24,7 +24,7 @@ ADMIN_JWT_PAYLOAD = {
     "sub": "auth0|6022bef23ae9d6006caf758b",
     "updated_at": "2021-02-09T16:57:22.685Z"
 }
-ADMIN_ACCESS_TOKEN = 'eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCIsImtpZCI6IngzOThFR1RoWUQyUS1uYzRVRWxOcSJ9.eyJpc3MiOiJodHRwczovL3N1bWVzaC1mc25kLmpwLmF1dGgwLmNvbS8iLCJzdWIiOiJhdXRoMHw2MDIyYmVmMjNhZTlkNjAwNmNhZjc1OGIiLCJhdWQiOiJodHRwOi8vbG9jYWxob3N0OjUwMDAiLCJpYXQiOjE2MTI4ODk5MzAsImV4cCI6MTYxMjg5NzEzMCwiYXpwIjoiNVByRlZPOFlCR1NISmJGNlhkdllqRnlKMk4wVlZqM3oiLCJzY29wZSI6IiIsInBlcm1pc3Npb25zIjpbImRlbGV0ZTphbGxfcmV2aWV3cyIsImRlbGV0ZTp1c2VyX3Jldmlld3MiLCJnZXQ6YWRtaW4iLCJnZXQ6YWxsX3Jldmlld3MiLCJnZXQ6YWxsX3VzZXJzIiwiZ2V0OnVzZXJfcmV2aWV3cyIsInBhdGNoOnVzZXJfcmV2aWV3cyIsInBvc3Q6dXNlcl9yZXZpZXdzIl19.p9UB_pCZGeqb0LD5Td04N3un3TaJM2tx8n4kZ28EOJtcSz6J9Szm7lptBERbJyM_TwZN2rATsP3RGYV6JXXJfFPTeuL0JNMhBEoe5FCfofqsrNnaeMuuzsUjDMmQS6GQMAS3kAqW-kBtvUkVPWdA072xplslHNn8V0S__TNf9ZQdRelgzhBqedJMVKrkjip952Crcn-T2I6D5rewS0OHtEfKze3EPr75kKRc-st64Ev9l_sS4eTCIA_BUlARez3tlsMnCLNOvha9vfYIuYezrZiZ_MoYOBDSJWvp4adis8d30OdeS8-YFTovjAR51_3lcBReRQGhITqeb5snmqR-jQ'
+USER_ACCESS_TOKEN = os.environ.get('ADMIN_ACCESS_TOKEN')
 
 
 @contextmanager
@@ -51,43 +51,16 @@ class BookSnapTestCase(unittest.TestCase):
         self.app.config['WTF_CSRF_ENABLED'] = False
         self.app.config['TESTING'] = True
      
-        # binds the app to the current context
-        # with self.app.app_context():
-
-        #     session['jwt_payload'] = 'testpayload'
-           
-        #     session['profile'] = {
-        #         'user_id': '601c1f4b35fbeb006b45a58a',
-        #         'name': "test123@gmail.com",
-              
-  
-        # }
-
-        
-    
     def tearDown(self):
         """Executed after each test"""
         print("teardown")
-        # with self.app.app_context():
-        #     try:
-        #         self.db.session.query(Category).delete()
-        #         self.db.session.query(Question).delete()
-        #         self.db.session.commit()
-        #     except Exception as e:
-        #         print('error',e)
-        #         self.db.session.rollback()
 
 
     def test_valid_home(self):
-      
-        
         response = self.client().get('/home')
-        
-    
         self.assertEqual(response.status_code,200)
  
     def test_invalid_unauthenticated_profile(self):
-      
         with self.client() as c:
             with captured_templates(self.app) as templates:
                 r = c.get('/profile')
@@ -97,7 +70,6 @@ class BookSnapTestCase(unittest.TestCase):
                 print(template,context)
 
     def test_valid_user_profile(self):
-      
         with self.client() as c:
             with captured_templates(self.app) as templates:
                     with c.session_transaction() as s:
@@ -110,7 +82,6 @@ class BookSnapTestCase(unittest.TestCase):
                     self.assertEqual(template.name, 'profile.html')
 
     def test_invalid_unauthenticated_user_reviews(self):
-      
         with self.client() as c:
             with captured_templates(self.app) as templates:
                 r = c.get('/reviews')
@@ -131,8 +102,6 @@ class BookSnapTestCase(unittest.TestCase):
                     self.assertEqual(template.name, 'user_reviews.html') 
 
    
-    
-    
     def test_valid_search(self):
         with self.client() as c:
             with captured_templates(self.app) as templates:
