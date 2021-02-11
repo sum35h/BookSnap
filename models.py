@@ -10,6 +10,28 @@ class User(db.Model):
   username = db.Column(db.String(120),nullable=True)
   reviews = db.relationship('Review',backref='user')
 
+  def insert(self):
+    db.session.add(self)
+    db.session.commit()
+  
+  def update(self):
+    db.session.commit()
+
+  def delete(self):
+    db.session.delete(self)
+    db.session.commit()
+
+  def __repr__(self):
+      return f'<User : id={self.id} username:{self.username}>'
+
+  def format(self):
+      return  ({
+        "id":self.id,
+        "username":self.username,
+        "reviews":self.reviews
+        })
+
+
 
 
 
@@ -32,8 +54,29 @@ class Book(db.Model):
         self.summary=summary
         self.image_link=image_link
 
+    def insert(self):
+      db.session.add(self)
+      db.session.commit()
+  
+    def update(self):
+      db.session.commit()
+
+    def delete(self):
+      db.session.delete(self)
+      db.session.commit()
+
+    def __repr__(self):
+      return f'<Book : id={self.id} title:{self.title} author:{self.author}>'
+
     def format(self):
-      return  ({"title":self.title,"author":self.author})
+      return  ({
+        "id":self.id,
+        "title":self.title,
+        "author":self.author,
+        "category":self.category,
+        "summary":self.summary,
+        "image_link":self.image_link
+        })
 
 
 class Review(db.Model):
@@ -47,8 +90,27 @@ class Review(db.Model):
     rating = db.Column(db.Integer)
     user_id = db.Column(db.String,db.ForeignKey('users.id'))
     book_id= db.Column(db.String,db.ForeignKey('books.id'))
-    
-  
 
+    def insert(self):
+      db.session.add(self)
+      db.session.commit()
+    
+    def update(self):
+      db.session.commit()
+
+    def delete(self):
+      db.session.delete(self)
+      db.session.commit()
     def __repr__(self):
       return f'<Review : id={self.id} title:{self.title} comment:{self.comment}>'
+
+    def format(self):
+      return  ({
+        "id":self.id,
+        "created":self.created,
+        "edited":self.edited,
+        "comment":self.comment,
+        "rating":self.rating,
+        "user_id":self.user_id,
+        "book_id":self.book_id,
+        })
