@@ -215,7 +215,7 @@ def dashboard(payload):
 
 
 @app.route('/book/reviews/<string:book_id>',methods=['POST'])
-@requires_auth(permission='post:user_reviews')
+@requires_auth(')
 def post_review(payload,book_id):
     try:
         print('id =',book_id)
@@ -245,7 +245,7 @@ def post_review(payload,book_id):
 
     
 @app.route('/books/<string:book_id>/reviews/<int:review_id>',methods=['DELETE'])
-@requires_auth(permission='delete:user_reviews')
+@requires_auth()
 def delete_review(payload,book_id,review_id):
     try:
         review = Review.query.get(review_id)
@@ -277,7 +277,7 @@ def admin_delete_review(payload,review_id):
     return jsonify({'success':True})
 
 @app.route('/books/<string:book_id>/reviews/<int:review_id>',methods=['POST'])
-@requires_auth(permission="patch:user_reviews")
+@requires_auth()
 def update_review(payload,book_id,review_id):
     try:
         review = Review.query.get(review_id)
