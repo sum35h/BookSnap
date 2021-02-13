@@ -215,7 +215,7 @@ def dashboard(payload):
 
 
 @app.route('/book/reviews/<string:book_id>',methods=['POST'])
-@requires_auth(')
+@requires_auth()
 def post_review(payload,book_id):
     try:
         print('id =',book_id)
