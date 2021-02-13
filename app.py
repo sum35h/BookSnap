@@ -38,7 +38,6 @@ auth0 = oauth.register(
     audience=os.environ.get('API_AUDIENCE'),
     client_kwargs={
         'scope': 'openid profile email',
-
     },
 
 )
