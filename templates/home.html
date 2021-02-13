@@ -16,15 +16,65 @@
 
 {% if name!='Login' %}
 <div class="container">
-    <h2> Home </h2>
-    <p> A community for readerssss</p>
-
+    <div class="card">
+        <div class="card-header">
+            <h3 class="card-title"> A home for your books.</h3>
+        </div>
+        <div class="card-body row">
+            <div class="col-md-4 col-4"> <img class="card-img-top" src='static/library.jpg' height="200" width="80"></div>
+            <div class="col-md-8 col-8">
+                <p> 
+                    Enter what you’re reading or your whole library. It’s an easy, library-quality catalog.</p>
+                
+                    
+            </div>
+        </div>
+    </div>
+    
 {% else %}
- <h2>Home</h2>
- <p> A community for readersss</p>
+<div class="card">
+    <div class="card-header">
+        <h3 class="card-title"> A home for your books.</h3>
+    </div>
+    <div class="card-body row">
+        <div class="col-md-4 col-4"> <img class="card-img-top" src='static/library.jpg' height="200" width="80"></div>
+        <div class="col-md-8 col-8">
+            <p> 
+                Enter what you’re reading or your whole library. It’s an easy, library-quality catalog.</p>
+                <h4>Check it out</h4>
+                    <a href="{{url_for('login')}}">Sign up</a>
+        </div>
+    </div>
+</div>
 
- <p><a href="{{url_for('login')}}">Login/register to start posting reviews</a></p>
 {% endif %}
+<br>
+<div class="card">
+    <div class="card-header">
+        <h3 class="card-title"> Recent Activity</h3>
+    </div>
+    <div class="row">
+        <div class="col-sm-6">
+          <div class="card">
+            <div class="card-body">
+              <h5 class="card-title">{{reviews[0].book.title}}</h5>
+              <p class="card-text">Review and rated by {{reviews[0].user.username}}</p>
+              <a href="{{url_for('book_details',id=reviews[0].book.id)}}" class="btn btn-primary">Read Review</a>
+            </div>
+          </div>
+        </div>
+        <div class="col-sm-6">
+          <div class="card">
+            <div class="card-body">
+              <h5 class="card-title">{{reviews[1].book.title}}</h5>
+              <p class="card-text">Review and rated by {{reviews[1].user.username}}</p>
+              <a href="{{url_for('book_details',id=reviews[1].book.id)}}" class="btn btn-primary">Read Review</a>
+            </div>
+          </div>
+        </div>
+      </div>
+</div>
+
 </div>
 
 {% endblock %}
