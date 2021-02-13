@@ -201,7 +201,7 @@ def callback_handling():
 
 @app.route('/login')
 def login():
-    return auth0.authorize_redirect(redirect_uri=os.environ.get('CALLBACK'))
+    return auth0.authorize_redirect(redirect_uri=CALLBACK)
 
 @app.route('/logout')
 @requires_auth()
