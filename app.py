@@ -76,7 +76,9 @@ def home():
         name = session.get('profile')['name']
     else:
         name='Login'
-    return render_template('home.html',name=name)
+    reviews = Review.query.order_by(Review.edited.desc()).limit(4).all()
+    print(reviews)
+    return render_template('home.html',name=name,reviews=reviews)
 
 @app.route('/admin/')
 @requires_auth(permission='get:admin')
