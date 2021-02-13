@@ -15,7 +15,8 @@ from forms import ReviewForm
 from auth import *
 import os
 
-AUTH0_URL = os.environ.get('AUTH0_URL')
+AUTH0_URL='https://sumesh-fsnd.jp.auth0.com/authorize?audience=http://localhost:5000&response_type=token&client_id=5PrFVO8YBGSHJbF6XdvYjFyJ2N0VVj3z&redirect_uri=https://booksnap.herokuapp.com/home'
+
 SECRET_KEY='booksnap'
 AUTH0_DOMAIN='https://sumesh-fsnd.jp.auth0.com'
 AUTH0_URL='https://sumesh-fsnd.jp.auth0.com/authorize?audience=http://localhost:5000&response_type=token&client_id=5PrFVO8YBGSHJbF6XdvYjFyJ2N0VVj3z&redirect_uri=https://booksnap.herokuapp.com/home'
