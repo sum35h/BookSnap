@@ -16,7 +16,18 @@ from auth import *
 import os
 
 AUTH0_URL = os.environ.get('AUTH0_URL')
-
+SECRET_KEY='booksnap'
+AUTH0_DOMAIN='https://sumesh-fsnd.jp.auth0.com'
+AUTH0_URL='https://sumesh-fsnd.jp.auth0.com/authorize?audience=http://localhost:5000&response_type=token&client_id=5PrFVO8YBGSHJbF6XdvYjFyJ2N0VVj3z&redirect_uri=https://booksnap.herokuapp.com/home'
+CLIENT_ID='5PrFVO8YBGSHJbF6XdvYjFyJ2N0VVj3z'
+CLIENT_SHARED_SECRET='A9SEQvAG_QdnVVnFal00FT7-5MSKZf4z4INPZn6TLeoTmvsL6rJLoVKXWvjer4bv'
+ALGORITHMS=['RS256']
+ACCESS_TOKEN_URL='https://sumesh-fsnd.jp.auth0.com/oauth/token'
+AUTHORIZE_URL='https://sumesh-fsnd.jp.auth0.com/authorize'
+API_AUDIENCE='http://localhost:5000'
+USER_ACCESS_TOKEN='eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCIsImtpZCI6IngzOThFR1RoWUQyUS1uYzRVRWxOcSJ9.eyJpc3MiOiJodHRwczovL3N1bWVzaC1mc25kLmpwLmF1dGgwLmNvbS8iLCJzdWIiOiJhdXRoMHw2MDFjMWY0YjM1ZmJlYjAwNmI0NWE1OGEiLCJhdWQiOiJodHRwOi8vbG9jYWxob3N0OjUwMDAiLCJpYXQiOjE2MTI4ODc1NTYsImV4cCI6MTYxMjg5NDc1NiwiYXpwIjoiNVByRlZPOFlCR1NISmJGNlhkdllqRnlKMk4wVlZqM3oiLCJzY29wZSI6IiIsInBlcm1pc3Npb25zIjpbImRlbGV0ZTp1c2VyX3Jldmlld3MiLCJnZXQ6dXNlcl9yZXZpZXdzIiwicGF0Y2g6dXNlcl9yZXZpZXdzIiwicG9zdDp1c2VyX3Jldmlld3MiXX0.WX-6_A69nL5zU4ryeJAR8Y7YA33eyGs3Fl95TrDl0ffU_1rrrJZwOIyk9Vo3iplQ_f00cImDlraZSfuNHrTBh392CREVMyeb8gc_4NsIkVXEwlZQu9sPdo6y9r4sknQO0Wqo6tqDWK-TkM5zxyvoSfLlYfKgddsE4OOcSQno8sHaTDb2-fUqs6e-8BQYzS58Xf_D4zcXUhlsFxzz5aeUqRFCDxeG0TzWB6l-hR8euu8MDaw_ryZIDfCB1qpYEDVCAElnnXhEK47US_lXry-JCXW_rkuFnbKN-ggCCCWJ5wShQJtLkFt7gTLmZ93NyBpv-hE3x2yTY8IruxYzRAVRUw'
+ADMIN_ACCESS_TOKEN="eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCIsImtpZCI6IngzOThFR1RoWUQyUS1uYzRVRWxOcSJ9.eyJpc3MiOiJodHRwczovL3N1bWVzaC1mc25kLmpwLmF1dGgwLmNvbS8iLCJzdWIiOiJhdXRoMHw2MDIyYmVmMjNhZTlkNjAwNmNhZjc1OGIiLCJhdWQiOiJodHRwOi8vbG9jYWxob3N0OjUwMDAiLCJpYXQiOjE2MTI4ODk5MzAsImV4cCI6MTYxMjg5NzEzMCwiYXpwIjoiNVByRlZPOFlCR1NISmJGNlhkdllqRnlKMk4wVlZqM3oiLCJzY29wZSI6IiIsInBlcm1pc3Npb25zIjpbImRlbGV0ZTphbGxfcmV2aWV3cyIsImRlbGV0ZTp1c2VyX3Jldmlld3MiLCJnZXQ6YWRtaW4iLCJnZXQ6YWxsX3Jldmlld3MiLCJnZXQ6YWxsX3VzZXJzIiwiZ2V0OnVzZXJfcmV2aWV3cyIsInBhdGNoOnVzZXJfcmV2aWV3cyIsInBvc3Q6dXNlcl9yZXZpZXdzIl19.p9UB_pCZGeqb0LD5Td04N3un3TaJM2tx8n4kZ28EOJtcSz6J9Szm7lptBERbJyM_TwZN2rATsP3RGYV6JXXJfFPTeuL0JNMhBEoe5FCfofqsrNnaeMuuzsUjDMmQS6GQMAS3kAqW-kBtvUkVPWdA072xplslHNn8V0S__TNf9ZQdRelgzhBqedJMVKrkjip952Crcn-T2I6D5rewS0OHtEfKze3EPr75kKRc-st64Ev9l_sS4eTCIA_BUlARez3tlsMnCLNOvha9vfYIuYezrZiZ_MoYOBDSJWvp4adis8d30OdeS8-YFTovjAR51_3lcBReRQGhITqeb5snmqR-jQ"
+CALLBACK='https://booksnap.herokuapp.com/callback'
 
 app = Flask(__name__)
 moment = Moment(app)
@@ -30,12 +41,12 @@ migrate = Migrate(app,db)
 oauth = OAuth(app)
 auth0 = oauth.register(
     'auth0',
-    client_id = os.environ.get('CLIENT_ID'),
-    client_secret=os.environ.get('CLIENT_SHARED_SECRET'),
-    api_base_url= os.environ.get('AUTH0_DOMAIN'),
-    access_token_url=os.environ.get('ACCESS_TOKEN_URL'),
-    authorize_url=os.environ.get('AUTHORIZE_URL'),
-    audience=os.environ.get('API_AUDIENCE'),
+    client_id = CLIENT_ID,
+    client_secret=CLIENT_SHARED_SECRET,
+    api_base_url= AUTH0_DOMAIN,
+    access_token_url=ACCESS_TOKEN_URL,
+    authorize_url=AUTHORIZE_URL,
+    audience=API_AUDIENCE,
     client_kwargs={
         'scope': 'openid profile email',
     },
